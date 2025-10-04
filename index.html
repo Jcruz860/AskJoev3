@@ -8,44 +8,50 @@
 </head>
 <body>
   <script>
-    console.log('Current authentication status:', localStorage.getItem('authenticated'));
+    // Auth gate
     if (localStorage.getItem('authenticated') !== 'true') {
-      console.log('User not authenticated. Redirecting to login...');
       window.location.href = 'login.html';
-    } else {
-      console.log('User authenticated. Proceeding to application...');
     }
-
     function logout() {
       localStorage.removeItem('authenticated');
       window.location.href = 'login.html';
     }
   </script>
 
+  <!-- Indicator header -->
+  <header class="indicator-bar">
+    <!-- Tone letter (click cycles tones) -->
+    <button id="indTone" class="ind ind-tone" title="Tone">C</button>
+    <!-- Rewrite, Copy, Invisible toggle, Auto-copy toggle, Logout -->
+    <button id="indRewrite" class="ind ind-rewrite" title="Rewrite">R</button>
+    <button id="indCopy" class="ind ind-copy" title="Copy current text">C</button>
+    <button id="indInvisible" class="ind ind-invisible" title="Invisible (toggle)">I</button>
+    <button id="indAutoCopy" class="ind ind-autocopy" title="Auto-copy (toggle)">AC</button>
+    <button id="indLogout" class="ind ind-logout" title="Logout">L</button>
+  </header>
+
   <div class="container">
     <div class="ameriask">
       <h1>Ask Joe</h1>
-      
+
+      <!-- Main input -->
       <textarea id="inputText" rows="10" placeholder="Paste your message here..."></textarea>
 
-      <!-- 🎭 Rewrite Style Dropdown -->
-      <select id="tone">
-        <option disabled selected value="">🎭 Choose a tone...</option>
+      <!-- Keep tone select for compatibility with your API, but hide it -->
+      <select id="tone" class="visually-hidden" aria-hidden="true" tabindex="-1">
         <option value="professional">Professional</option>
         <option value="friendly">Friendly</option>
         <option value="relatable">Relatable</option>
         <option value="funny">Funny</option>
         <option value="strict">Strict/Assertive</option>
-        <option value="concise">Concise</option>
+        <option value="concise" selected>Concise</option>
         <option value="supportive">Detailed/Supportive</option>
       </select>
 
-      <button onclick="rewriteText()">Rewrite</button>
-      <button onclick="logout()">Logout</button>
-
-      <div id="outputContainer">
-        <p id="outputText"></p>
-        <button id="copyBtn" onclick="copyOutput()" style="display: none;">Copy ✂️</button>
+      <!-- Optional legacy buttons (can be removed if you want only the header indicators) -->
+      <div class="button-row">
+        <button id="rewriteBtn">Rewrite</button>
+        <button id="logoutBtn">Logout</button>
       </div>
     </div>
 
