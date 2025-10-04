@@ -22,11 +22,12 @@
   <header class="indicator-bar">
     <!-- Tone letter (click cycles tones) -->
     <button id="indTone" class="ind ind-tone" title="Tone">C</button>
-    <!-- Rewrite, Copy, Invisible toggle, Auto-copy toggle, Logout -->
+    <!-- Rewrite, Copy, Invisible toggle, Auto-copy toggle, Clear, Logout -->
     <button id="indRewrite" class="ind ind-rewrite" title="Rewrite">R</button>
     <button id="indCopy" class="ind ind-copy" title="Copy current text">C</button>
     <button id="indInvisible" class="ind ind-invisible" title="Invisible (toggle)">I</button>
     <button id="indAutoCopy" class="ind ind-autocopy" title="Auto-copy (toggle)">AC</button>
+    <button id="indClear" class="ind ind-clear" title="Clear text">X</button>
     <button id="indLogout" class="ind ind-logout" title="Logout">L</button>
   </header>
 
@@ -34,8 +35,16 @@
     <div class="ameriask">
       <h1>Ask Joe</h1>
 
-      <!-- Main input -->
-      <textarea id="inputText" rows="10" placeholder="Paste your message here..."></textarea>
+      <!-- Main input (no spellcheck or autocorrect) -->
+      <textarea
+        id="inputText"
+        rows="10"
+        placeholder="Paste your message here..."
+        spellcheck="false"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="off"
+      ></textarea>
 
       <!-- Keep tone select for compatibility with your API, but hide it -->
       <select id="tone" class="visually-hidden" aria-hidden="true" tabindex="-1">
