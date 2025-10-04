@@ -153,3 +153,81 @@ select#tone:focus {
 #inputText.invisible::placeholder {
   color: rgba(194, 240, 255, 0.25);
 }
+
+/* Hide the tone <select> we keep for API compatibility */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  clip: rect(0 0 0 0) !important;
+  overflow: hidden !important;
+}
+
+/* Indicator header bar */
+.indicator-bar{
+  position: sticky; /* stays visible when page scrolls */
+  top: 0; 
+  z-index: 10;
+  display:flex; gap:8px; align-items:center; justify-content:center;
+  width: 100%;
+  padding: 8px 12px;
+  background: rgba(15, 27, 41, 0.9);           /* blends with your palette */
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(0,224,255,0.12);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+  margin-bottom: 16px;
+}
+
+/* Tiny indicator pills (C • R • C • I • AC • L) */
+.ind{
+  --bd:#21455a;
+  appearance:none;
+  border:1px solid var(--bd);
+  background:#142532;
+  color: var(--text-primary);
+  font-family: 'Cabin', sans-serif;
+  font-weight: 800;
+  font-size: .9rem;
+  letter-spacing: .02em;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,224,255,0.08);
+  transition: transform .15s ease, filter .15s ease, background .15s ease, color .15s ease;
+}
+.ind:hover{ transform: translateY(-1px); filter: brightness(1.1); }
+
+/* Active state (on/toggled) */
+.ind.active{
+  background: var(--accent-glow);
+  color:#001019;
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 12px var(--button-glow);
+}
+
+/* Subtle per-indicator base hues (optional, matches your theme) */
+.ind-rewrite   { background:#113246; }
+.ind-copy      { background:#10302a; }
+.ind-invisible { background:#2a2232; }
+.ind-autocopy  { background:#1b3131; }
+.ind-logout    { background:#2b1f1f; }
+
+/* When toggled ON (color pop so you can see it's active) */
+.ind-invisible.active{ background:#7e57c2; color:#0b0820; border-color:#7e57c2; }
+.ind-autocopy.active { background:#23f0c7; color:#00251c; border-color:#23f0c7; }
+
+/* Keep your main input readable while hidden */
+#inputText.invisible {
+  color: transparent !important;
+  caret-color: var(--text-primary);
+}
+#inputText.invisible::placeholder {
+  color: rgba(194, 240, 255, 0.25);
+}
+
+/* Optional: small spacing for legacy buttons under the textarea */
+.button-row { margin-top: 8px; }
+
