@@ -233,3 +233,14 @@ select#tone:focus {
 
 /* Optional: spacing for legacy buttons under textarea */
 .button-row { margin-top: 8px; }
+
+/* When invisible, prevent selection visual + selecting */
+#inputText.invisible {
+  user-select: none;
+}
+#inputText.invisible::selection {
+  background: transparent;
+  color: transparent;
+}
+
+
