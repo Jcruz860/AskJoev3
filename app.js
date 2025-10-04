@@ -22,6 +22,7 @@ const indRewrite = document.getElementById('indRewrite');
 const indCopy = document.getElementById('indCopy');
 const indInvisible = document.getElementById('indInvisible');
 const indAutoCopy = document.getElementById('indAutoCopy');
+const indClear = document.getElementById('indClear');
 const indLogout = document.getElementById('indLogout');
 
 // Optional legacy buttons (ok to remove later)
@@ -75,6 +76,21 @@ function applyAutoCopy(on){
 indAutoCopy.addEventListener('click', ()=> applyAutoCopy(!indAutoCopy.classList.contains('active')));
 
 indLogout.addEventListener('click', ()=> { localStorage.removeItem('authenticated'); window.location.href='login.html'; });
+
+/**********************
+ * CLEAR input (X)
+ **********************/
+function clearInput() {
+  // pulse X
+  indClear?.classList.add('active'); setTimeout(()=> indClear?.classList.remove('active'), 200);
+  // keep invisible state as-is; just nuke content
+  inputEl.value = '';
+  // collapse any selection to start (prevents visual artifacts)
+  try { inputEl.setSelectionRange(0, 0); } catch {}
+  // friendly hint
+  inputEl.placeholder = 'Cleared. Paste or type new text…';
+}
+indClear?.addEventListener('click', clearInput);
 
 /**********************
  * REWRITE (uses /api/rewrite)
