@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes</title>
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <div id="logo"> 
+    <h1><i>Joe's Password is..</i></h1>
+  </div>
+
+  <section class="stark-login">
+    <form id="loginForm">
+      <div id="fade-box">
+        <input type="password" name="password" id="password" placeholder="Password" required />
+        <button type="submit">Log In</button> 
+        <p id="error" style="color: red; display: none;">Invalid password. Please try again.</p>
+      </div>
+    </form>
+
+    <div class="hexagons">
+      <span>&#x2B22;</span><span>&#x2B22;</span><span>&#x2B22;</span>
+      <span>&#x2B22;</span><span>&#x2B22;</span><span>&#x2B22;</span>
+      <span>&#x2B22;</span><span>&#x2B22;</span><span>&#x2B22;</span>
+    </div>
+  </section>
+
+  <div id="circle1">
+    <div id="inner-circle1"></div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const password = document.getElementById('password').value;
+
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem('authenticated', 'true');
+          window.location.href = '/';
+        } else {
+          document.getElementById('error').style.display = 'block';
+        }
+      })
+      .catch(error => console.error('Login error:', error));
+    });
+  </script>
+</body>
+</html>

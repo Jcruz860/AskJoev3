@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notes</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <script>
+    console.log('Current authentication status:', localStorage.getItem('authenticated'));
+    if (localStorage.getItem('authenticated') !== 'true') {
+      console.log('User not authenticated. Redirecting to login...');
+      window.location.href = 'login.html';
+    } else {
+      console.log('User authenticated. Proceeding to application...');
+    }
+
+    function logout() {
+      localStorage.removeItem('authenticated');
+      window.location.href = 'login.html';
+    }
+  </script>
+
+  <div class="container">
+    <div class="ameriask">
+      <h1>Ask Joe</h1>
+      
+      <textarea id="inputText" rows="10" placeholder="Paste your message here..."></textarea>
+
+      <!-- 🎭 Rewrite Style Dropdown -->
+      <select id="tone">
+        <option disabled selected value="">🎭 Choose a tone...</option>
+        <option value="professional">Professional</option>
+        <option value="friendly">Friendly</option>
+        <option value="relatable">Relatable</option>
+        <option value="funny">Funny</option>
+        <option value="strict">Strict/Assertive</option>
+        <option value="concise">Concise</option>
+        <option value="supportive">Detailed/Supportive</option>
+      </select>
+
+      <button onclick="rewriteText()">Rewrite</button>
+      <button onclick="logout()">Logout</button>
+
+      <div id="outputContainer">
+        <p id="outputText"></p>
+        <button id="copyBtn" onclick="copyOutput()" style="display: none;">Copy ✂️</button>
+      </div>
+    </div>
+
+    <div class="notes">
+      <h2>Notes</h2>
+      <textarea id="notesText" rows="15" placeholder="Type your notes here..."></textarea>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

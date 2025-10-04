@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700italic');
+@import url('https://fonts.googleapis.com/css?family=Cabin:400');
+
+:root {
+  --accent-glow: #00e0ff;
+  --accent-secondary: #006d77;
+  --text-primary: #c2f0ff;
+  --button-glow: #23f0c7;
+  --bg-color: #0a0f1c;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg-color);
+  background-size: cover;
+  font-size: 10px;
+  height: 100%;
+  overflow: hidden;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+}
+
+/* Logo */
+#logo {
+  animation: logo-entry 4s ease-in;
+  width: 500px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 40;
+}
+
+h1 {
+  animation: text-glow 2s ease-out infinite alternate;
+  font-family: 'Ubuntu', sans-serif;
+  color: var(--accent-secondary);
+  font-size: 4.8rem;
+  font-weight: bold;
+  position: absolute;
+  top: 50px;
+  text-shadow: 0 0 15px var(--accent-glow);
+}
+
+#fade-box {
+  animation: input-entry 3s ease-in;
+  z-index: 4;
+}
+
+/* Login Form */
+.stark-login form {
+  animation: form-entry 3s ease-in-out;
+  background: linear-gradient(#082232, #0a0f1c);
+  border: 6px solid var(--accent-secondary);
+  box-shadow: 0 0 15px var(--accent-glow);
+  border-radius: 5px;
+  display: inline-block;
+  height: 220px;
+  margin: 200px auto 0;
+  position: relative;
+  z-index: 4;
+  width: 500px;
+  transition: 1s all;
+}
+
+.stark-login form:hover {
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.stark-login input {
+  background: linear-gradient(#1b2e3b, #111b21);
+  border: 1px solid #2c3e4f;
+  border-radius: 5px;
+  box-shadow: 0 2px 0 #000;
+  color: var(--text-primary);
+  display: block;
+  font-family: 'Cabin', helvetica, arial, sans-serif;
+  font-size: 1.3rem;
+  height: 40px;
+  margin: 20px auto 10px;
+  padding: 0 10px;
+  text-shadow: 0 -1px 0 #000;
+  width: 400px;
+}
+
+.stark-login input:focus {
+  animation: box-glow 1s ease-out infinite alternate;
+  background: linear-gradient(#1b3b44, #102e36);
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 5px rgba(0, 255, 253, 0.2), inset 0 0 5px rgba(0, 255, 253, 0.1), 0 2px 0 #000;
+  color: #e7faff;
+  outline: none;
+}
+
+.stark-login input:invalid {
+  border: 2px solid red;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.2), inset 0 0 5px rgba(255, 0, 0, 0.1), 0 2px 0 #000;
+}
+
+.stark-login button {
+  animation: input-entry 3s ease-in;
+  background: linear-gradient(#1a2c36, #0f1d24);
+  border: 1px solid #2c3e4f;
+  border-radius: 5px;
+  box-shadow: 0 2px 0 #000;
+  color: #e7faff;
+  display: block;
+  font-family: 'Cabin', helvetica, arial, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  height: 40px;
+  line-height: 40px;
+  margin: 20px auto;
+  padding: 0;
+  width: 400px;
+  transition: 1s all;
+  cursor: pointer;
+}
+
+.stark-login button:hover,
+.stark-login button:focus {
+  background: linear-gradient(#1f3a45, #12303a);
+  color: var(--button-glow);
+  outline: none;
+}
+
+.stark-login button:active {
+  background: linear-gradient(#2b4049, #1a2f39);
+  box-shadow: 0 1px 0 #000, inset 1px 0 1px #222;
+  top: 1px;
+}
+
+/* Spinner Ring */
+#circle1 {
+  animation: circle1 6s linear infinite;
+  border: 10px solid var(--accent-glow);
+  border-top: 10px solid transparent;
+  border-radius: 50%;
+  width: 500px;
+  height: 500px;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  margin-left: -250px;
+  z-index: -10;
+  box-shadow: 0 0 40px var(--accent-glow);
+  transform-origin: center center;
+  opacity: 0.3;
+}
+
+/* Hexagon Mesh */
+.hexagons {
+  animation: logo-entry 4s ease-in;
+  color: #021019;
+  font-size: 5.1rem;
+  letter-spacing: -0.2em;
+  line-height: 0.7;
+  position: absolute;
+  text-shadow: 0 0 6px var(--accent-glow);
+  top: 310px;
+  width: 100%;
+  transform: perspective(600px) rotateX(60deg) scale(1.4);
+  z-index: -3;
+}
+
+/* Animations */
+@keyframes logo-entry {
+  0%, 80% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes circle1 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes circle-entry {
+  0%, 20% { opacity: 0; }
+  100% { opacity: 0.4; }
+}
+
+@keyframes input-entry {
+  0%, 90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes form-entry {
+  0% {
+    height: 0;
+    width: 0;
+    opacity: 0;
+    padding: 0;
+  }
+  20% {
+    height: 0;
+    border: 1px solid var(--accent-secondary);
+    width: 0;
+    opacity: 0;
+    padding: 0;
+  }
+  40% {
+    width: 0;
+    height: 220px;
+    border: 6px solid var(--accent-secondary);
+    opacity: 1;
+    padding: 0;
+  }
+  100% {
+    height: 220px;
+    width: 500px;
+  }
+}
+
+@keyframes box-glow {
+  0% {
+    border-color: #00b8b6;
+    box-shadow: 0 0 5px rgba(0, 255, 253, 0.2), inset 0 0 5px rgba(0, 255, 253, 0.1), 0 2px 0 #000;
+  }
+  100% {
+    border-color: var(--accent-glow);
+    box-shadow: 0 0 20px rgba(0, 255, 253, 0.6), inset 0 0 10px rgba(0, 255, 253, 0.4), 0 2px 0 #000;
+  }
+}
+
+@keyframes text-glow {
+  0% {
+    color: var(--accent-secondary);
+    text-shadow: 0 0 10px #000, 0 0 20px #000, 0 0 30px #000;
+  }
+  100% {
+    color: var(--accent-glow);
+    text-shadow: 0 0 20px rgba(0, 255, 253, 0.6), 0 0 10px rgba(0, 255, 253, 0.4), 0 2px 0 #000;
+  }
+}
