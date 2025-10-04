@@ -25,31 +25,22 @@ const indAutoCopy = document.getElementById('indAutoCopy');
 const indClear = document.getElementById('indClear');
 const indLogout = document.getElementById('indLogout');
 
-// Optional legacy buttons (ok to remove later)
-const rewriteBtn = document.getElementById('rewriteBtn');
-const logoutBtn = document.getElementById('logoutBtn');
-
 /**********************
  * INIT DEFAULTS
  **********************/
-// Tone defaults to concise
 const storedTone = load(SETTINGS.toneKey, 'concise');
 if (toneSelect) toneSelect.value = storedTone;
 updateToneIndicator(storedTone);
 
-// Invisible initial state
 applyInvisible(!!load(SETTINGS.invisibleKey, false));
-
-// Auto-copy initial state (default ON)
 applyAutoCopy(!!load(SETTINGS.autoCopyKey, true));
 
 /**********************
- * INDICATORS: handlers
+ * INDICATORS
  **********************/
 function updateToneIndicator(tone){
   const letter = (tone || 'concise').charAt(0).toUpperCase();
   indTone.textContent = letter;
-  // quick flash
   indTone.classList.add('active'); setTimeout(()=>indTone.classList.remove('active'), 200);
 }
 function cycleTone(){
@@ -63,7 +54,7 @@ function cycleTone(){
 indTone.addEventListener('click', cycleTone);
 
 function applyInvisible(on){
-  if (on) inputEl.classList.add('invisible'); else inputEl.classList.remove('invisible');
+  inputEl.classList.toggle('invisible', !!on);
   save(SETTINGS.invisibleKey, !!on);
   indInvisible.classList.toggle('active', !!on);
 }
@@ -81,81 +72,75 @@ indLogout.addEventListener('click', ()=> { localStorage.removeItem('authenticate
  * CLEAR input (X)
  **********************/
 function clearInput() {
-  // pulse X
   indClear?.classList.add('active'); setTimeout(()=> indClear?.classList.remove('active'), 200);
-  // keep invisible state as-is; just nuke content
   inputEl.value = '';
-  // collapse any selection to start (prevents visual artifacts)
   try { inputEl.setSelectionRange(0, 0); } catch {}
-  // friendly hint
   inputEl.placeholder = 'Cleared. Paste or type new text…';
 }
 indClear?.addEventListener('click', clearInput);
 
 /**********************
  * REWRITE (uses /api/rewrite)
- * - Replaces textarea value
- * - Auto-copies if AC is active
+ * - DOES NOT overwrite your prompt
+ * - Copies rewritten text to clipboard (and pulses Copy)
  **********************/
 async function rewriteText(){
-  const text = inputEl.value;
+  const original = inputEl.value;
   const tone = toneSelect.value || 'concise';
 
-  if (!text.trim()){
+  if (!original.trim()){
     inputEl.placeholder = 'Type something to rewrite…';
     return;
   }
 
-  // pulse R
   indRewrite.classList.add('active'); setTimeout(()=> indRewrite.classList.remove('active'), 200);
 
   try{
     const res = await fetch('/api/rewrite', {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ text, tone })
+      body: JSON.stringify({ text: original, tone })
     });
 
     let data = {};
-    try { data = await res.json(); } catch {/* leave empty */}
+    try { data = await res.json(); } catch {}
     const rewritten = (data && typeof data.rewritten_text === 'string') ? data.rewritten_text : '';
 
-    if (rewritten){
-      inputEl.value = rewritten;
+    const output = rewritten || cleanupLocal(original);
 
-      if (indAutoCopy.classList.contains('active')){
-        try{
-          await navigator.clipboard.writeText(rewritten);
-          indCopy.classList.add('active'); setTimeout(()=> indCopy.classList.remove('active'), 350);
-        }catch{/* ignore clipboard errors */}
-      }
-    } else {
-      // fallback mini-cleanup so you still get something
-      inputEl.value = cleanupLocal(text);
+    // ✅ Always copy the output to clipboard; do NOT replace the input box
+    try{
+      await navigator.clipboard.writeText(output);
+      indCopy.classList.add('active'); setTimeout(()=> indCopy.classList.remove('active'), 450);
+    }catch{
+      // ignore clipboard errors quietly
     }
+
   }catch(err){
     console.error(err);
-    inputEl.value = cleanupLocal(text);
+    // graceful fallback: try to copy the cleaned version
+    const fallback = cleanupLocal(original);
+    try{
+      await navigator.clipboard.writeText(fallback);
+      indCopy.classList.add('active'); setTimeout(()=> indCopy.classList.remove('active'), 450);
+    }catch{}
   }
 }
 
-// Wire indicators + legacy buttons
+// Wire indicators
 indRewrite.addEventListener('click', rewriteText);
-rewriteBtn?.addEventListener('click', rewriteText);
-
-// Copy indicator
 indCopy.addEventListener('click', async ()=>{
   const t = inputEl.value;
   if (!t) return;
   try{
     await navigator.clipboard.writeText(t);
     indCopy.classList.add('active'); setTimeout(()=> indCopy.classList.remove('active'), 350);
-  }catch{/* ignore */}
+  }catch{}
 });
 
 /**********************
  * KEYBOARD
- * Enter = Rewrite (no Shift+Enter newline)
+ * Enter = Rewrite (no Shift+Enter newline), keeps original text
  **********************/
 inputEl.addEventListener('keydown', (e)=>{
   if (e.key === 'Enter'){
@@ -178,17 +163,5 @@ function cleanupLocal(txt){
   return t;
 }
 
-/**********************
- * OPTIONAL: legacy copyOutput() if something else calls it
- **********************/
-function copyOutput(){
-  const t = inputEl.value || '';
-  if (!t) return;
-  navigator.clipboard.writeText(t).then(()=>{
-    indCopy.classList.add('active'); setTimeout(()=> indCopy.classList.remove('active'), 350);
-  }).catch(()=>{ /* ignore */ });
-}
-
-// Keep a couple of globals if other scripts expect them
+// Export (if anything else calls these)
 window.rewriteText = rewriteText;
-window.copyOutput = copyOutput;
