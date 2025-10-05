@@ -75,7 +75,7 @@ function clearInput() {
   indClear?.classList.add('active'); setTimeout(()=> indClear?.classList.remove('active'), 200);
   inputEl.value = '';
   try { inputEl.setSelectionRange(0, 0); } catch {}
-  inputEl.placeholder = 'Cleared. Paste or type new text…';
+  inputEl.placeholder = '';
 }
 indClear?.addEventListener('click', clearInput);
 
@@ -165,3 +165,4 @@ function cleanupLocal(txt){
 
 // Export (if anything else calls these)
 window.rewriteText = rewriteText;
+
